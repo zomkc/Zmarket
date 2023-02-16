@@ -1,2 +1,12 @@
 server:
   port: 8084
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://1.15.89.136:3306/zmarket_pms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: Zz15882202696
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto

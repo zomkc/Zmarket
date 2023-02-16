@@ -2,12 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.cn</groupId>
+    <groupId>com.zomkc</groupId>
     <artifactId>zmarket</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>zmarket</name>
     <description>聚合</description>
     <packaging>pom</packaging>
+    <properties>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+    </properties>
 
     <modules>
         <module>zmarket-coupon</module>
@@ -15,6 +19,9 @@
         <module>zmarket-order</module>
         <module>zmarket-product</module>
         <module>zmarket-ware</module>
+        <module>renren-fast</module>
+        <module>renren-generator</module>
+        <module>zmarket-common</module>
     </modules>
 
 

@@ -6,15 +6,21 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="zmarket-member" />
-        <module name="zmarket-coupon" />
-        <module name="zmarket-product" />
         <module name="zmarket-ware" />
+        <module name="renren-generator" />
         <module name="zmarket-order" />
+        <module name="zmarket-common" />
+        <module name="zmarket-coupon" />
+        <module name="renren-fast" />
+        <module name="zmarket-member" />
+        <module name="zmarket-product" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="zmarket" target="1.5" />
+      <module name="renren-fast" target="1.8" />
+      <module name="renren-generator" target="1.8" />
+      <module name="zmarket" target="1.8" />
+      <module name="zmarket-common" target="1.8" />
       <module name="zmarket-coupon" target="1.8" />
       <module name="zmarket-member" target="1.8" />
       <module name="zmarket-order" target="1.8" />
@@ -24,6 +30,8 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="renren-fast" options="-parameters" />
+      <module name="renren-generator" options="-parameters" />
       <module name="zmarket-coupon" options="-parameters" />
       <module name="zmarket-member" options="-parameters" />
       <module name="zmarket-order" options="-parameters" />

@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/renren-fast/renren-fast.iml" filepath="$PROJECT_DIR$/renren-fast/renren-fast.iml" />
+      <module fileurl="file://$PROJECT_DIR$/renren-generator/renren-generator.iml" filepath="$PROJECT_DIR$/renren-generator/renren-generator.iml" />
       <module fileurl="file://$PROJECT_DIR$/zmarket.iml" filepath="$PROJECT_DIR$/zmarket.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zmarket-common/zmarket-common.iml" filepath="$PROJECT_DIR$/zmarket-common/zmarket-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/zmarket-coupon/zmarket-coupon.iml" filepath="$PROJECT_DIR$/zmarket-coupon/zmarket-coupon.iml" />
       <module fileurl="file://$PROJECT_DIR$/zmarket-member/zmarket-member.iml" filepath="$PROJECT_DIR$/zmarket-member/zmarket-member.iml" />
       <module fileurl="file://$PROJECT_DIR$/zmarket-order/zmarket-order.iml" filepath="$PROJECT_DIR$/zmarket-order/zmarket-order.iml" />
