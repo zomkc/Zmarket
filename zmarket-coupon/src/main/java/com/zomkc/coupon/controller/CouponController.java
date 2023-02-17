@@ -4,11 +4,8 @@ import java.util.Arrays;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
 
 import com.zomkc.coupon.entity.CouponEntity;
 import com.zomkc.coupon.service.CouponService;
@@ -29,6 +26,13 @@ import com.zomkc.common.utils.R;
 public class CouponController {
     @Autowired
     private CouponService couponService;
+    @Value("${zomkc.name}")
+    private String name;
+
+    @GetMapping("/name")
+    public String testname(){
+        return name;
+    }
 
     /**
      * 列表

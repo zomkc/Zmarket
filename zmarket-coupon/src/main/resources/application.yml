@@ -6,6 +6,12 @@ spring:
     url: jdbc:mysql://1.15.89.136:3306/zmarket_sms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
     password: Zz15882202696
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 #老版本cloud写法
+  application:
+    name: zmarket-coupon
 mybatis-plus:
   global-config:
     db-config:
