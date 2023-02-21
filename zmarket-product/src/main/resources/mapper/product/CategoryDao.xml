@@ -16,5 +16,7 @@
         <result property="productCount" column="product_count"/>
     </resultMap>
 
-
+    <select id="listWithTree" resultType="com.zomkc.product.entity.CategoryEntity">
+        select * from pms_category
+    </select>
 </mapper>

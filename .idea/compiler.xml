@@ -10,6 +10,7 @@
         <module name="zmarket-ware" />
         <module name="renren-generator" />
         <module name="zmarket-order" />
+        <module name="zomkc-gateway" />
         <module name="zmarket-common" />
         <module name="zmarket-coupon" />
         <module name="renren-fast" />
@@ -27,6 +28,7 @@
       <module name="zmarket-order" target="1.8" />
       <module name="zmarket-product" target="1.8" />
       <module name="zmarket-ware" target="1.8" />
+      <module name="zomkc-gateway" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -38,6 +40,7 @@
       <module name="zmarket-order" options="-parameters" />
       <module name="zmarket-product" options="-parameters" />
       <module name="zmarket-ware" options="-parameters" />
+      <module name="zomkc-gateway" options="-parameters" />
     </option>
   </component>
 </project>

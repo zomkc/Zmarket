@@ -31,7 +31,7 @@ import java.util.Map;
  *
  * @author Mark sunlightcs@gmail.com
  */
-@RestController("/api")
+@RestController
 public class SysLoginController extends AbstractController {
 	@Autowired
 	private SysUserService sysUserService;
@@ -42,9 +42,8 @@ public class SysLoginController extends AbstractController {
 	/**
 	 * 验证码
 	 */
-	@GetMapping("captcha.jpg")
+	@GetMapping("/captcha.jpg")
 	public void captcha(HttpServletResponse response, String uuid)throws IOException {
-		System.out.println("111");
 		response.setHeader("Cache-Control", "no-store, no-cache");
 		response.setContentType("image/jpeg");
 

@@ -1,7 +1,14 @@
 package com.zomkc.product.service.impl;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -16,6 +23,9 @@ import com.zomkc.product.service.CategoryService;
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
 
+    @Autowired
+    private CategoryDao categoryDao;
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<CategoryEntity> page = this.page(
@@ -26,4 +36,47 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return new PageUtils(page);
     }
 
+    @Override
+    public List<CategoryEntity> listWithTree() {
+        //baseMapper.listWithTree(); //baseMapper已经把CategoryDao注入进来了
+        //查出所有分类
+        List<CategoryEntity> categorys = categoryDao.listWithTree();
+        //组装父子结构
+        List<CategoryEntity> Level1Menus = categorys.stream()
+                .filter(CategoryEntity -> CategoryEntity.getParentCid() == 0)
+                .map((menu) -> {
+                    menu.setChildren(getChildrens(menu,categorys));
+                    return menu;
+                })
+                .sorted((menu1,menu2) -> { return menu1.getSort() - menu2.getSort(); })
+//                .sorted((Comparator.comparing(CategoryEntity::getSort))
+                .collect(Collectors.toList());
+
+
+        return Level1Menus;
+    }
+
+    @Override
+    public void removeMenuByIds(List<Long> asList) {
+        //TODO 1.检测当前菜单是否在别的地方引用
+
+        baseMapper.deleteBatchIds(asList);
+    }
+
+    //传入当前菜单,和所有菜单, 递归查找所有菜单的子菜单
+    private List<CategoryEntity> getChildrens(CategoryEntity root,List<CategoryEntity> all){
+        List<CategoryEntity> collect = all.stream().filter(CategoryEntity -> {
+            //为当前菜单找到所有子菜单 在所有菜单中过滤出当前菜单的子菜单
+            return CategoryEntity.getParentCid().equals(root.getCatId());
+        }).map(CategoryEntity -> {
+            //递归 为过滤出来的子菜单找出子菜单的所有分类
+            CategoryEntity.setChildren(getChildrens(CategoryEntity,all));
+            return CategoryEntity;
+        })
+        .sorted((menu1,menu2) -> {
+            return (menu1.getSort()==null?0:menu1.getSort()) - (menu2.getSort()==null?0:menu2.getSort());
+        })
+        .collect(Collectors.toList());
+        return collect;
+    }
 }

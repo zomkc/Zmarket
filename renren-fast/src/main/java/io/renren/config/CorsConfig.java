@@ -28,20 +28,4 @@ public class CorsConfig implements WebMvcConfigurer {
 //            .maxAge(3600);
 //    }
 
-    @Bean
-    public CorsWebFilter corsWebFilter() {
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
-        CorsConfiguration configuration = new CorsConfiguration();
-        //配置跨域 Access-Control-Allow-Origin
-        configuration.addAllowedHeader("*");
-        //这里要写具体的跨域的前端url不要写*
-        configuration.addAllowedOrigin("http://localhost:8001");
-//        configuration.addAllowedOrigin("*");
-        configuration.addAllowedMethod("*");
-        configuration.setAllowCredentials(true);
-        source.registerCorsConfiguration("/**", configuration);
-        return new CorsWebFilter(source);
-    }
-
 }
