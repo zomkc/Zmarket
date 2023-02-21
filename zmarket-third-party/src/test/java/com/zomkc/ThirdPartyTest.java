@@ -8,6 +8,7 @@ import com.aliyun.oss.model.PutObjectResult;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,19 +21,25 @@ public class ThirdPartyTest {
 
     @Autowired
     private OSSClient ossClient;
+    @Value("${spring.cloud.alicloud.access-key}")
+    private String key;
+    @Test
+    public void  test2(){
+        System.out.println(key);
+    }
 
     @Test
     public void Test(){
         // 填写Bucket名称，例如examplebucket。
         String bucketName = "zomkc";
         // 填写Object完整路径，完整路径中不能包含Bucket名称，例如exampledir/exampleobject.txt。
-        String objectName = "zomkc/zomkcTest2.txt";
+        String objectName = "zomkc/zomkcTest.txt";
         // 创建OSSClient实例。
 //        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
         try {
             // 填写字符串。
-            String content = "Hello OSS，你好世界";
+            String content = "Hello OSS，你好世界 111";
 
             // 创建PutObjectRequest对象。
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, objectName, new ByteArrayInputStream(content.getBytes()));
