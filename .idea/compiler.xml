@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="zmarket-third-party" />
         <module name="zmarket-ware" />
         <module name="renren-generator" />
         <module name="zmarket-order" />
@@ -27,6 +28,7 @@
       <module name="zmarket-member" target="1.8" />
       <module name="zmarket-order" target="1.8" />
       <module name="zmarket-product" target="1.8" />
+      <module name="zmarket-third-party" target="1.8" />
       <module name="zmarket-ware" target="1.8" />
       <module name="zomkc-gateway" target="1.8" />
     </bytecodeTargetLevel>
@@ -39,6 +41,7 @@
       <module name="zmarket-member" options="-parameters" />
       <module name="zmarket-order" options="-parameters" />
       <module name="zmarket-product" options="-parameters" />
+      <module name="zmarket-third-party" options="-parameters" />
       <module name="zmarket-ware" options="-parameters" />
       <module name="zomkc-gateway" options="-parameters" />
     </option>
