@@ -1,8 +1,6 @@
 package com.zomkc;
 
-import com.aliyun.oss.*;
-import com.aliyun.oss.model.PutObjectRequest;
-import com.aliyun.oss.model.PutObjectResult;
+
 import com.zomkc.product.ProductApplication;
 import com.zomkc.product.dao.CategoryDao;
 import com.zomkc.product.entity.BrandEntity;
@@ -16,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.ByteArrayInputStream;
+import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -26,6 +25,12 @@ public class ProductTest {
     private BrandService brandService;
     @Autowired
     private CategoryService categoryService;
+
+    @Test
+    public void testPatentPath(){
+        Long[] catelogPath = categoryService.findCatelogPath(225L);
+        System.out.println(Arrays.asList(catelogPath));
+    }
 
 
     @Test

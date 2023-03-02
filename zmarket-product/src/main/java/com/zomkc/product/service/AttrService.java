@@ -3,6 +3,8 @@ package com.zomkc.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zomkc.common.utils.PageUtils;
 import com.zomkc.product.entity.AttrEntity;
+import com.zomkc.product.vo.AttrRespVo;
+import com.zomkc.product.vo.AttrVo;
 
 import java.util.Map;
 
@@ -16,5 +18,13 @@ import java.util.Map;
 public interface AttrService extends IService<AttrEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void saveAttr(AttrVo attr);
+
+    PageUtils queryBaseAttrPage(Map<String, Object> params, Long catelogId,int type);
+
+    AttrRespVo getByIdInfo(Long attrId);
+
+    void updateAttr(AttrVo attr);
 }
 

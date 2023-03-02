@@ -17,4 +17,7 @@
     <update id="updateStatusById">
         UPDATE `pms_brand` SET show_status = #{showStatus} WHERE brand_id = #{brandId}
     </update>
+    <update id="updateCategory">
+        update `psm_category_brand_relation` set catelog_name=#{name}  where catelog_id=#{catId}
+    </update>
 </mapper>

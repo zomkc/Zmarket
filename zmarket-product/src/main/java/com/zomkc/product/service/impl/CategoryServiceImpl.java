@@ -1,12 +1,11 @@
 package com.zomkc.product.service.impl;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zomkc.product.service.CategoryBrandRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -18,6 +17,7 @@ import com.zomkc.common.utils.Query;
 import com.zomkc.product.dao.CategoryDao;
 import com.zomkc.product.entity.CategoryEntity;
 import com.zomkc.product.service.CategoryService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("categoryService")
@@ -25,6 +25,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     @Autowired
     private CategoryDao categoryDao;
+    @Autowired
+    private CategoryBrandRelationService categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -61,6 +63,32 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         //TODO 1.检测当前菜单是否在别的地方引用
 
         baseMapper.deleteBatchIds(asList);
+    }
+
+    @Override
+    public Long[] findCatelogPath(Long groupId) {
+        List<Long> path = new ArrayList<>();
+        List<Long> parentPath = findParentPath(groupId, path);
+        Collections.reverse(parentPath);    //逆序转换父子顺序
+        return parentPath.toArray(new Long[0]);
+    }
+
+    @Transactional
+    @Override
+    public void updateCascade(CategoryEntity category) {
+        this.updateById(category);
+        categoryBrandRelationService.updateCategory(category.getCatId(),category.getName());
+    }
+
+    private List<Long> findParentPath(Long groupId, List<Long> path){
+        //收集当前节点
+        path.add(groupId);
+        CategoryEntity category = this.getById(groupId);
+        if (category.getParentCid() != 0){
+            //收集当前节点父节点
+            findParentPath(category.getParentCid(),path);
+        }
+        return path;
     }
 
     //传入当前菜单,和所有菜单, 递归查找所有菜单的子菜单

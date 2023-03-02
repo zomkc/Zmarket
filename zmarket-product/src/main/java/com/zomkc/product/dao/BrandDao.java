@@ -15,4 +15,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface BrandDao extends BaseMapper<BrandEntity> {
 
     void updateStatusById(Integer showStatus,Long brandId);
+
+    void updateCategory(Long catId, String name);
 }

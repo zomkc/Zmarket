@@ -3,12 +3,11 @@ package com.zomkc.product.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.zomkc.product.vo.AttrRespVo;
+import com.zomkc.product.vo.AttrVo;
+import constant.ProductConstant;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.zomkc.product.entity.AttrEntity;
 import com.zomkc.product.service.AttrService;
@@ -30,6 +29,20 @@ public class AttrController {
     @Autowired
     private AttrService attrService;
 
+    //规格参数 1
+    @GetMapping("/base/list/{catelogId}")
+    public R baseAttrList(@RequestParam Map<String,Object> params, @PathVariable("catelogId") Long catelogId){
+        //0是销售属性,1是属性规格
+        PageUtils page =  attrService.queryBaseAttrPage(params,catelogId,ProductConstant.AttrEnum.ATTR_TYPE_BASE.getCode());
+        return R.ok().put("page",page);
+    }
+    //销售属性 0
+    @GetMapping("/sale/list/{catelogId}")
+    public R saleAttrList(@RequestParam Map<String,Object> params, @PathVariable("catelogId") Long catelogId){
+        PageUtils page =  attrService.queryBaseAttrPage(params,catelogId, ProductConstant.AttrEnum.ATTR_TYPE_SALE.getCode());
+        return R.ok().put("page",page);
+    }
+
     /**
      * 列表
      */
@@ -48,8 +61,8 @@ public class AttrController {
     @RequestMapping("/info/{attrId}")
     //@RequiresPermissions("product:attr:info")
     public R info(@PathVariable("attrId") Long attrId){
-		AttrEntity attr = attrService.getById(attrId);
-
+//		AttrEntity attr = attrService.getById(attrId);
+        AttrRespVo attr = attrService.getByIdInfo(attrId);
         return R.ok().put("attr", attr);
     }
 
@@ -58,8 +71,8 @@ public class AttrController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:attr:save")
-    public R save(@RequestBody AttrEntity attr){
-		attrService.save(attr);
+    public R save(@RequestBody AttrVo attr){
+		attrService.saveAttr(attr);
 
         return R.ok();
     }
@@ -69,8 +82,8 @@ public class AttrController {
      */
     @RequestMapping("/update")
     //@RequiresPermissions("product:attr:update")
-    public R update(@RequestBody AttrEntity attr){
-		attrService.updateById(attr);
+    public R update(@RequestBody AttrVo attr){
+		attrService.updateAttr(attr);
 
         return R.ok();
     }

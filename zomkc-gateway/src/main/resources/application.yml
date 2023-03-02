@@ -14,6 +14,12 @@ spring:
             - Path=/api/product/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
+        - id: zmarket-third-party
+          uri: lb://zmarket-third-party
+          predicates:
+            - Path=/api/thirdparty/**
+          filters:
+            - RewritePath=/api/thirdparty/(?<segment>.*),/$\{segment}
         - id: renren-fast
           uri: lb://renren-fast
           predicates:
