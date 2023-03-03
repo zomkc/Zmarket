@@ -3,6 +3,7 @@ package com.zomkc.coupon.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zomkc.common.utils.PageUtils;
 import com.zomkc.coupon.entity.SkuFullReductionEntity;
+import to.SkuReductionTo;
 
 import java.util.Map;
 
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface SkuFullReductionService extends IService<SkuFullReductionEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void save(SkuReductionTo skuReductionTo);
 }
 

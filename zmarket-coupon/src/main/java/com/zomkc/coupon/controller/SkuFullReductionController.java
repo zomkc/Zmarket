@@ -14,7 +14,7 @@ import com.zomkc.coupon.entity.SkuFullReductionEntity;
 import com.zomkc.coupon.service.SkuFullReductionService;
 import com.zomkc.common.utils.PageUtils;
 import com.zomkc.common.utils.R;
-
+import to.SkuReductionTo;
 
 
 /**
@@ -52,6 +52,14 @@ public class SkuFullReductionController {
 
         return R.ok().put("skuFullReduction", skuFullReduction);
     }
+    @RequestMapping("/saveinfo")
+    //@RequiresPermissions("coupon:skufullreduction:save")
+    public R saveInfo(@RequestBody SkuReductionTo skuReductionTo){
+        skuFullReductionService.save(skuReductionTo);
+
+        return R.ok();
+    }
+
 
     /**
      * 保存

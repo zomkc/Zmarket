@@ -3,6 +3,7 @@ package com.zomkc.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zomkc.common.utils.PageUtils;
 import com.zomkc.product.entity.SpuInfoEntity;
+import com.zomkc.product.vo.SpuSaveVo;
 
 import java.util.Map;
 
@@ -16,5 +17,9 @@ import java.util.Map;
 public interface SpuInfoService extends IService<SpuInfoEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void saveSpuInfo(SpuSaveVo vo);
+
+    void saveBaseSpuInfo(SpuInfoEntity infoEntity);
 }
 
