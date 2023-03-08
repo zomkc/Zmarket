@@ -1,6 +1,6 @@
 spring:
   application:
-    name: zzmarket-third-party #服务名称
+    name: zmarket-third-party #服务名称
   cloud:
     nacos:
       config:

@@ -20,6 +20,12 @@ spring:
             - Path=/api/member/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
+        - id: zmarket-ware
+          uri: lb://zmarket-ware
+          predicates:
+            - Path=/api/ware/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
         - id: zmarket-third-party
           uri: lb://zmarket-third-party
           predicates:

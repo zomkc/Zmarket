@@ -8,7 +8,7 @@
         <version>2.1.8.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.cn</groupId>
+    <groupId>com.zomkc</groupId>
     <artifactId>zmarket-product</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>zmarket-product</name>

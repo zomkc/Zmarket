@@ -16,6 +16,7 @@
         <module name="zmarket-coupon" />
         <module name="renren-fast" />
         <module name="zmarket-member" />
+        <module name="zmarket-search" />
         <module name="zmarket-product" />
       </profile>
     </annotationProcessing>
@@ -28,6 +29,7 @@
       <module name="zmarket-member" target="1.8" />
       <module name="zmarket-order" target="1.8" />
       <module name="zmarket-product" target="1.8" />
+      <module name="zmarket-search" target="1.8" />
       <module name="zmarket-third-party" target="1.8" />
       <module name="zmarket-ware" target="1.8" />
       <module name="zomkc-gateway" target="1.8" />
@@ -41,6 +43,7 @@
       <module name="zmarket-member" options="-parameters" />
       <module name="zmarket-order" options="-parameters" />
       <module name="zmarket-product" options="-parameters" />
+      <module name="zmarket-search" options="-parameters" />
       <module name="zmarket-third-party" options="-parameters" />
       <module name="zmarket-ware" options="-parameters" />
       <module name="zomkc-gateway" options="-parameters" />

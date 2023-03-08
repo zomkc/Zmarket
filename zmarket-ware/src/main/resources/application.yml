@@ -1,12 +1,22 @@
 server:
   port: 8085
 spring:
+  application:
+    name: zmarket-ware
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://1.15.89.136:3306/zmarket_wms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
     password: Zz15882202696
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
 mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
       id-type: auto

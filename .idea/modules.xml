@@ -10,6 +10,7 @@
       <module fileurl="file://$PROJECT_DIR$/zmarket-member/zmarket-member.iml" filepath="$PROJECT_DIR$/zmarket-member/zmarket-member.iml" />
       <module fileurl="file://$PROJECT_DIR$/zmarket-order/zmarket-order.iml" filepath="$PROJECT_DIR$/zmarket-order/zmarket-order.iml" />
       <module fileurl="file://$PROJECT_DIR$/zmarket-product/zmarket-product.iml" filepath="$PROJECT_DIR$/zmarket-product/zmarket-product.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zmarket-search/zmarket-search.iml" filepath="$PROJECT_DIR$/zmarket-search/zmarket-search.iml" />
       <module fileurl="file://$PROJECT_DIR$/zmarket-third-party/zmarket-third-party.iml" filepath="$PROJECT_DIR$/zmarket-third-party/zmarket-third-party.iml" />
       <module fileurl="file://$PROJECT_DIR$/zmarket-ware/zmarket-ware.iml" filepath="$PROJECT_DIR$/zmarket-ware/zmarket-ware.iml" />
       <module fileurl="file://$PROJECT_DIR$/zomkc-gateway/zomkc-gateway.iml" filepath="$PROJECT_DIR$/zomkc-gateway/zomkc-gateway.iml" />
