@@ -1,6 +1,8 @@
 server:
   port: 8084
 spring:
+  mvc:
+    static-path-pattern: /static/**
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://1.15.89.136:3306/zmarket_pms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
@@ -14,6 +16,9 @@ spring:
         server-addr: localhost:8848
   jackson:
     date-format: YYYY-MM-dd HH:mm:ss
+  thymeleaf:
+    cache: false
+
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

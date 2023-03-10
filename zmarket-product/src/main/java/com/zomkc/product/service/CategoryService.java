@@ -3,6 +3,7 @@ package com.zomkc.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zomkc.common.utils.PageUtils;
 import com.zomkc.product.entity.CategoryEntity;
+import com.zomkc.product.vo.Catelog2Vo;
 
 import java.util.List;
 import java.util.Map;
@@ -26,5 +27,9 @@ public interface CategoryService extends IService<CategoryEntity> {
     Long[] findCatelogPath(Long groupId);
 
     void updateCascade(CategoryEntity category);
+
+    List<CategoryEntity> getLeveliCategorys();
+
+    Map<String, List<Catelog2Vo>> getCatelogJson();
 }
 
