@@ -2,7 +2,10 @@ package com.zomkc.search;
 
 import com.alibaba.fastjson.JSON;
 import com.zomkc.search.config.ElaSticsearchConfig;
+import com.zomkc.search.constant.EsConstant;
 import lombok.Data;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -20,6 +23,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import to.es.SkuEsModel;
 
 import java.io.IOException;
 
@@ -81,6 +85,26 @@ public class SearchTest {
             user user = JSON.parseObject(string, user.class);
             System.out.println(user);
         }
+    }
+
+    @Autowired
+    private RestHighLevelClient esRestClient;
+
+    //测试保存sku
+    @Test
+    public void testsearch() throws IOException {
+        BulkRequest bulkRequest = new BulkRequest();
+        SkuEsModel skuEsModel = new SkuEsModel();
+        skuEsModel.setBrandName("测试");
+        //构造保存请求
+            IndexRequest indexRequest = new IndexRequest(EsConstant.PRODUCT_INDEX); //product
+            indexRequest.id("1");
+            String jsonString = JSON.toJSONString(skuEsModel);
+            indexRequest.source(jsonString, XContentType.JSON);
+            bulkRequest.add(indexRequest);
+
+
+        BulkResponse bulk = esRestClient.bulk(bulkRequest, ElaSticsearchConfig.COMMON_OPTIONS);
     }
 
     @Data
