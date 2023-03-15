@@ -1,12 +1,15 @@
 package com.zomkc.product.service.impl;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.zomkc.product.service.CategoryBrandRelationService;
 import com.zomkc.product.vo.Catelog2Vo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -19,6 +22,7 @@ import com.zomkc.product.dao.CategoryDao;
 import com.zomkc.product.entity.CategoryEntity;
 import com.zomkc.product.service.CategoryService;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 
 @Service("categoryService")
@@ -28,6 +32,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     private CategoryDao categoryDao;
     @Autowired
     private CategoryBrandRelationService categoryBrandRelationService;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -82,44 +88,29 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     }
 
     @Override
-    public List<CategoryEntity> getLeveliCategorys() {
+    public List<CategoryEntity> getLeveliCatagorys() {
         List<CategoryEntity> categoryEntities = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", 0));
         return categoryEntities;
     }
 
+
     @Override
-    public Map<String, List<Catelog2Vo>> getCatelogJson() {
-//        //1.查出所有一级分类
-//        List<CategoryEntity> leveliCategorys = getLeveliCategorys();
-//        Map<String, List<Catelog2Vo>> parent_cid = leveliCategorys.stream().collect(Collectors.toMap(
-//                k -> k.getCatId().toString(),
-//                v -> {
-//                    //按照每一个一级分类,找到它们的子分类
-//                    List<CategoryEntity> categoryEntities = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", v.getCatId()));
-//                    List<Catelog2Vo> collect = null;
-//                    if (categoryEntities != null) {
-//                        collect = categoryEntities.stream().map(item -> {
-//                            Catelog2Vo catelog2Vo = new Catelog2Vo(v.getCatId().toString(), null, item.getCatId().toString(), item.getName());
-//                            //找到当前二级分类的的三级分类,并组装成vo
-//                            List<CategoryEntity> level3Catelog = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", item.getCatId()));
-//                            if (level3Catelog != null){
-//                                List<Catelog2Vo.Category3Vo> category3Vos = level3Catelog.stream().map(l3 -> {
-//                                    //2、封装成指定格式
-//                                    Catelog2Vo.Category3Vo category3Vo = new Catelog2Vo.Category3Vo(item.getCatId().toString(), l3.getCatId().toString(), l3.getName());
-//
-//                                    return category3Vo;
-//                                }).collect(Collectors.toList());
-//                                catelog2Vo.setCatalog3List(category3Vos);
-//                            }
-//
-//                            return catelog2Vo;
-//                        }).collect(Collectors.toList());
-//                    }
-//
-//                    return collect;
-//                }));
-//        return parent_cid;
-        //将数据库的多次查询变为一次
+    public Map<String, List<Catelog2Vo>> getCatalogJson() {
+        String catalogJson = redisTemplate.opsForValue().get("catalogJson");
+        if (!StringUtils.isEmpty(catalogJson)){ //不是空就返回
+//            Map<String, List<Catelog2Vo>> map = JSON.parseObject(catalogJson, new TypeReference<Map<String, List<Catelog2Vo>>>(){
+//            });
+        return JSON.parseObject(catalogJson,Map.class);
+        }
+        //查数据库
+        Map<String, List<Catelog2Vo>> catalogJsonFromDb = getCatalogJsonFromDb();
+            String jsonString = JSON.toJSONString(catalogJsonFromDb);
+            //存入redis
+            redisTemplate.opsForValue().set("catalogJson",jsonString,1, TimeUnit.DAYS);
+        return  catalogJsonFromDb;
+    }
+
+    public Map<String, List<Catelog2Vo>> getCatalogJsonFromDb() {
         List<CategoryEntity> selectList = this.baseMapper.selectList(null);
 
         //1、查出所有分类
@@ -159,11 +150,13 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
         return parentCid;
     }
+
+
+
+
     private List<CategoryEntity> getParent_cid(List<CategoryEntity> selectList,Long parentCid) {
         List<CategoryEntity> categoryEntities = selectList.stream().filter(item -> item.getParentCid().equals(parentCid)).collect(Collectors.toList());
         return categoryEntities;
-        // return this.baseMapper.selectList(
-        //         new QueryWrapper<CategoryEntity>().eq("parent_cid", parentCid));
     }
 
     private List<Long> findParentPath(Long groupId, List<Long> path){

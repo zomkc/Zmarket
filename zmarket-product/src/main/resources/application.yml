@@ -1,6 +1,10 @@
 server:
   port: 8084
 spring:
+  redis:
+    host: localhost
+    port: 6379
+    password: root
   mvc:
     static-path-pattern: /static/**
   datasource:

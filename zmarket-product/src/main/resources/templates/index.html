@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>谷粒商城2020</title>
+  <title>xx商城</title>
   <link rel="stylesheet" href="/static/index/css/swiper-3.4.2.min.css">
   <link rel="stylesheet" href="/static/index/css/GL.css">
   <script src="/static/index/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
@@ -588,17 +588,17 @@
     window.location.href="http://search.gulimall.com/list.html?keyword="+keyword;
   }
 
-  $.get("http://seckill.gulimall.com/getCurrentSeckillSkus", function (res) {
-    if (res.data.length > 0) {
-      res.data.forEach(function (item) {
-        $("<li onclick='toDetail(" + item.skuId + ")'></li>").append($("<img style='width: 130px; height: 130px' src='" + item.skuInfo.skuDefaultImg + "' />"))
-                .append($("<p>"+item.skuInfo.skuTitle+"</p>"))
-                .append($("<span>" + item.seckillPrice + "</span>"))
-                .append($("<s>" + item.skuInfo.price + "</s>"))
-                .appendTo("#seckillSkuContent");
-      })
-    }
-  })
+  // $.get("http://seckill.gulimall.com/getCurrentSeckillSkus", function (res) {
+  //   if (res.data.length > 0) {
+  //     res.data.forEach(function (item) {
+  //       $("<li onclick='toDetail(" + item.skuId + ")'></li>").append($("<img style='width: 130px; height: 130px' src='" + item.skuInfo.skuDefaultImg + "' />"))
+  //               .append($("<p>"+item.skuInfo.skuTitle+"</p>"))
+  //               .append($("<span>" + item.seckillPrice + "</span>"))
+  //               .append($("<s>" + item.skuInfo.price + "</s>"))
+  //               .appendTo("#seckillSkuContent");
+  //     })
+  //   }
+  // })
 
   function toDetail(skuId) {
     location.href = "http://item.gulimall.com/" + skuId + ".html";
