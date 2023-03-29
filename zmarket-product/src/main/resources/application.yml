@@ -22,6 +22,11 @@ spring:
     date-format: YYYY-MM-dd HH:mm:ss
   thymeleaf:
     cache: false
+  cache:
+    redis:
+      time-to-live: 3600000 #过期时间,毫秒单位
+      cache-null-values: true #允许缓存空值
+    type: redis
 
 mybatis-plus:
   configuration:
@@ -32,3 +37,15 @@ mybatis-plus:
       logic-delete-field: showStatus # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置实体类)
       logic-not-delete-value: 1 # 逻辑未删除值(默认为 0)
       logic-delete-value: 0 # 逻辑已删除值(默认为 1)
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 60000
+        readTimeout: 60000
+
+zmarket:
+  thread:
+    core-size: 20
+    max-size: 200
+    keep-alive-time: 10

@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="zmarket-third-party" />
         <module name="zmarket-ware" />
+        <module name="gulimall-auth-server" />
         <module name="renren-generator" />
         <module name="zmarket-order" />
         <module name="zomkc-gateway" />
@@ -21,6 +22,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="gulimall-auth-server" target="1.8" />
       <module name="renren-fast" target="1.8" />
       <module name="renren-generator" target="1.8" />
       <module name="zmarket" target="1.8" />
@@ -37,6 +39,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="gulimall-auth-server" options="-parameters" />
       <module name="renren-fast" options="-parameters" />
       <module name="renren-generator" options="-parameters" />
       <module name="zmarket-coupon" options="-parameters" />

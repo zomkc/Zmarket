@@ -1,7 +1,7 @@
 package com.zomkc.search.controller;
 
 
-import com.zomkc.common.exception.BizCodeEnume;
+import com.zomkc.common.exception.BizCodeEnum;
 import com.zomkc.common.utils.R;
 import com.zomkc.search.service.ProductSaveService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,11 +36,11 @@ public class ElasticSaveController {
         } catch (IOException e) {
             //log.error("商品上架错误{}",e);
 
-            return R.error(BizCodeEnume.PRODUCT_UP_EXCEPTION.getCode(),BizCodeEnume.PRODUCT_UP_EXCEPTION.getMessage());
+            return R.error(BizCodeEnum.PRODUCT_UP_EXCEPTION.getCode(), BizCodeEnum.PRODUCT_UP_EXCEPTION.getMessage());
         }
 
         if(status){
-            return R.error(BizCodeEnume.PRODUCT_UP_EXCEPTION.getCode(),BizCodeEnume.PRODUCT_UP_EXCEPTION.getMessage());
+            return R.error(BizCodeEnum.PRODUCT_UP_EXCEPTION.getCode(), BizCodeEnum.PRODUCT_UP_EXCEPTION.getMessage());
         }else {
             return R.ok();
         }

@@ -8,6 +8,12 @@ spring:
         locator:
           enabled: true
       routes:
+        - id: gulimall-auth-server
+          uri: lb://gulimall-auth-server
+          predicates:
+            - Path=/authserver/**
+          filters:
+            - RewritePath=/authserver/(?<segment>.*),/$\{segment}
         - id: zmarket-product
           uri: lb://zmarket-product
           predicates:

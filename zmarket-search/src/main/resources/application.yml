@@ -1,6 +1,8 @@
 server:
   port: 8086
 spring:
+  thymeleaf:
+    cache: false
   application:
     name: zmarket-search
   cloud:

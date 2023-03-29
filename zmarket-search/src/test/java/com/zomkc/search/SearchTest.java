@@ -1,7 +1,7 @@
 package com.zomkc.search;
 
 import com.alibaba.fastjson.JSON;
-import com.zomkc.search.config.ElaSticsearchConfig;
+import com.zomkc.search.config.ElasticSearchConfig;
 import com.zomkc.search.constant.EsConstant;
 import lombok.Data;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -12,7 +12,6 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -45,7 +44,7 @@ public class SearchTest {
         //2.准备Json文档
         request.source(JSON.toJSONString(user),XContentType.JSON);
         //3.发送请求
-        IndexResponse index = client.index(request, ElaSticsearchConfig.COMMON_OPTIONS);
+        IndexResponse index = client.index(request, ElasticSearchConfig.COMMON_OPTIONS);
 //IndexResponse[index=users,type=_doc,id=1,version=1,result=created,seqNo=0,primaryTerm=1,shards={"total":2,"successful":1,"failed":0}]
         System.out.println(index);
     }
@@ -56,7 +55,7 @@ public class SearchTest {
         //1.创建request对象
         GetRequest request = new GetRequest("users","1");
         //2.发送请求得到结果
-        GetResponse response = client.get(request, ElaSticsearchConfig.COMMON_OPTIONS);
+        GetResponse response = client.get(request, ElasticSearchConfig.COMMON_OPTIONS);
         //3.解析结果
         String json = response.getSourceAsString();
 
@@ -73,7 +72,7 @@ public class SearchTest {
         request.source()
                 .query(QueryBuilders.matchAllQuery());
         //3.发送请求
-        SearchResponse response = client.search(request, ElaSticsearchConfig.COMMON_OPTIONS);
+        SearchResponse response = client.search(request, ElasticSearchConfig.COMMON_OPTIONS);
         //4.解析结果
         System.out.println("共查询到"+response.getHits().getTotalHits().value+"条信息");
         SearchHits hits = response.getHits();
@@ -104,7 +103,7 @@ public class SearchTest {
             bulkRequest.add(indexRequest);
 
 
-        BulkResponse bulk = esRestClient.bulk(bulkRequest, ElaSticsearchConfig.COMMON_OPTIONS);
+        BulkResponse bulk = esRestClient.bulk(bulkRequest, ElasticSearchConfig.COMMON_OPTIONS);
     }
 
     @Data

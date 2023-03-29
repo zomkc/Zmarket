@@ -1,7 +1,7 @@
 package com.zomkc.search.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.zomkc.search.config.ElaSticsearchConfig;
+import com.zomkc.search.config.ElasticSearchConfig;
 import com.zomkc.search.constant.EsConstant;
 import com.zomkc.search.service.ProductSaveService;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,7 @@ public class ProductSaveServiceImpl implements ProductSaveService {
         }
 
 
-        BulkResponse bulk = esRestClient.bulk(bulkRequest, ElaSticsearchConfig.COMMON_OPTIONS);
+        BulkResponse bulk = esRestClient.bulk(bulkRequest, ElasticSearchConfig.COMMON_OPTIONS);
 
         //TODO 如果批量错误
         boolean hasFailures = bulk.hasFailures();

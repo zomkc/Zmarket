@@ -96,13 +96,13 @@
       <ul>
         <li>
           <a th:if="${session.loginUser != null}">欢迎, [[${session.loginUser.nickname}]]</a>
-          <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/login.html">你好，请登录</a>
+          <a th:if="${session.loginUser == null}" href="http://localhost:8150/login.html">你好，请登录</a>
         </li>
         <li>
-          <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/reg.html" class="li_2">免费注册</a>
+          <a th:if="${session.loginUser == null}" href="http://localhost:8150/reg.html" class="li_2">免费注册</a>
         </li>
         <li>
-          <a th:if="${session.loginUser != null}" href="http://auth.gulimall.com/loguot.html" class="li_2">立即退出</a>
+          <a th:if="${session.loginUser != null}" href="http://localhost:8150/loguot.html" class="li_2">立即退出</a>
         </li>
         <span>|</span>
         <li>
@@ -585,7 +585,7 @@
 <script type="text/javascript">
   function search() {
     var keyword=$("#searchText").val()
-    window.location.href="http://search.gulimall.com/list.html?keyword="+keyword;
+    window.location.href="http://localhost:8086/list.html?keyword="+keyword;
   }
 
   // $.get("http://seckill.gulimall.com/getCurrentSeckillSkus", function (res) {
@@ -601,7 +601,7 @@
   // })
 
   function toDetail(skuId) {
-    location.href = "http://item.gulimall.com/" + skuId + ".html";
+    location.href = "http://localhost:8086/" + skuId + ".html";
   }
 
 </script>

@@ -2,25 +2,42 @@ package com.zomkc;
 
 
 import com.zomkc.product.ProductApplication;
-import com.zomkc.product.dao.CategoryDao;
+import com.zomkc.product.dao.AttrGroupDao;
 import com.zomkc.product.entity.BrandEntity;
 import com.zomkc.product.entity.CategoryEntity;
 import com.zomkc.product.service.BrandService;
 import com.zomkc.product.service.CategoryService;
+import com.zomkc.product.vo.SpuItemAttrGroupVo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProductApplication.class)
 public class ProductTest {
+
+    @Autowired
+    private AttrGroupDao attrGroupDao;
+    @Test
+    public void TestAttr(){
+        List<SpuItemAttrGroupVo> attrGroupWithAttrsBySpuId = attrGroupDao.getAttrGroupWithAttrsBySpuId(9L, 225L);
+        System.out.println(attrGroupWithAttrsBySpuId);
+    }
+
+    @Autowired
+    private RedissonClient redissonClient;
+
+    @Test
+    public void redisClient(){
+        System.out.println(redissonClient);
+    }
 
     @Autowired
     private RedisTemplate redisTemplate;

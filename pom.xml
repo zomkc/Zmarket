@@ -25,6 +25,7 @@
 		<module>zomkc-gateway</module>
 		<module>zmarket-third-party</module>
 		<module>zmarket-search</module>
+		<module>gulimall-auth-server</module>
 	</modules>
 
 

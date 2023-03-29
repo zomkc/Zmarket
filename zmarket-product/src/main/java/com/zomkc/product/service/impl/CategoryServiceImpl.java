@@ -4,7 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.zomkc.product.service.CategoryBrandRelationService;
 import com.zomkc.product.vo.Catelog2Vo;
+import org.redisson.api.RLock;
+import org.redisson.api.RReadWriteLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +39,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     private CategoryBrandRelationService categoryBrandRelationService;
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired
+    private RedissonClient redissonClient;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -80,37 +87,55 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return parentPath.toArray(new Long[0]);
     }
 
-    @Transactional
+    @CacheEvict(value = "category",allEntries = true)       //删除category分区下的所有数据
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateCascade(CategoryEntity category) {
-        this.updateById(category);
-        categoryBrandRelationService.updateCategory(category.getCatId(),category.getName());
+        RReadWriteLock readWriteLock = redissonClient.getReadWriteLock("catalogJson-lock");
+        //创建写锁
+        RLock rLock = readWriteLock.writeLock();
+
+        try {
+            rLock.lock();
+            this.updateById(category);
+            categoryBrandRelationService.updateCategory(category.getCatId(),category.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            rLock.unlock();
+        }
+
+        //同时修改缓存中的数据
+        //删除缓存,等待下一次主动查询进行更新
     }
 
+    @Cacheable(value = {"category"},key = "#root.method.name",sync = true)
     @Override
-    public List<CategoryEntity> getLeveliCatagorys() {
+    public List<CategoryEntity> getLevel1Catagorys() {
         List<CategoryEntity> categoryEntities = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", 0));
         return categoryEntities;
     }
 
 
+//    @Override
+//    public Map<String, List<Catelog2Vo>> getCatalogJson() {
+//        String catalogJson = redisTemplate.opsForValue().get("catalogJson");
+//        if (!StringUtils.isEmpty(catalogJson)){ //不是空就返回
+////            Map<String, List<Catelog2Vo>> map = JSON.parseObject(catalogJson, new TypeReference<Map<String, List<Catelog2Vo>>>(){
+////            });
+//        return JSON.parseObject(catalogJson,Map.class);
+//        }
+//        //查数据库
+//        Map<String, List<Catelog2Vo>> catalogJsonFromDb = getCatalogJsonFromDb();
+//            String jsonString = JSON.toJSONString(catalogJsonFromDb);
+//            //存入redis
+//            redisTemplate.opsForValue().set("catalogJson",jsonString,1, TimeUnit.DAYS);
+//        return  catalogJsonFromDb;
+//    }
+
+    @Cacheable(value = "category",key = "#root.methodName")
     @Override
     public Map<String, List<Catelog2Vo>> getCatalogJson() {
-        String catalogJson = redisTemplate.opsForValue().get("catalogJson");
-        if (!StringUtils.isEmpty(catalogJson)){ //不是空就返回
-//            Map<String, List<Catelog2Vo>> map = JSON.parseObject(catalogJson, new TypeReference<Map<String, List<Catelog2Vo>>>(){
-//            });
-        return JSON.parseObject(catalogJson,Map.class);
-        }
-        //查数据库
-        Map<String, List<Catelog2Vo>> catalogJsonFromDb = getCatalogJsonFromDb();
-            String jsonString = JSON.toJSONString(catalogJsonFromDb);
-            //存入redis
-            redisTemplate.opsForValue().set("catalogJson",jsonString,1, TimeUnit.DAYS);
-        return  catalogJsonFromDb;
-    }
-
-    public Map<String, List<Catelog2Vo>> getCatalogJsonFromDb() {
         List<CategoryEntity> selectList = this.baseMapper.selectList(null);
 
         //1、查出所有分类
