@@ -27,6 +27,8 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static constant.AuthServerConstant.LOGIN_USER;
@@ -51,33 +53,48 @@ public class LoginController {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    /**
+     String regex = "^((13[0-9])|(14[05679])|(15([0-3,5-9]))|(16[2567])|(17[01235678])|(18[0-9]|19[135689]))\\d{8}$";//判断电话号码是否合法的正则表达式
+     String phone = "手机号";
+     Pattern p = Pattern.compile(regex);
+     Matcher m = p.matcher(phone);
+     boolean isMatch = m.matches();
+     System.out.println(isMatch);
+     */
+    private static String REG_EXP = "^((13[0-9])|(14[05679])|(15([0-3,5-9]))|(16[2567])|(17[01235678])|(18[0-9]|19[135689]))\\d{8}$";//判断电话号码是否合法的正则表达式
+
     @ResponseBody
     @GetMapping(value = "/sms/sendCode")
     public R sendCode(@RequestParam("phone") String phone) {
-
-        //1、接口防刷
-        String redisCode = stringRedisTemplate.opsForValue().get(AuthServerConstant.SMS_CODE_CACHE_PREFIX + phone);
-        if (!StringUtils.isEmpty(redisCode)) {
-            //活动存入redis的时间，用当前时间减去存入redis的时间，判断用户手机号是否在60s内发送验证码
-            long currentTime = Long.parseLong(redisCode.split("_")[1]);
-            if (System.currentTimeMillis() - currentTime < 60000) {
-                //60s内不能再发
-                return R.error(BizCodeEnum.SMS_CODE_EXCEPTION.getCode(),BizCodeEnum.SMS_CODE_EXCEPTION.getMessage());
+        //判断手机号是否合法
+        if( Pattern.compile(REG_EXP).matcher(phone).matches() ){
+            //1、接口防刷
+            String redisCode = stringRedisTemplate.opsForValue().get(AuthServerConstant.SMS_CODE_CACHE_PREFIX + phone);
+            if (!StringUtils.isEmpty(redisCode)) {
+                //活动存入redis的时间，用当前时间减去存入redis的时间，判断用户手机号是否在60s内发送验证码
+                long currentTime = Long.parseLong(redisCode.split("_")[1]);
+                if (System.currentTimeMillis() - currentTime < 60000) {
+                    //60s内不能再发
+                    return R.error(BizCodeEnum.SMS_CODE_EXCEPTION.getCode(),BizCodeEnum.SMS_CODE_EXCEPTION.getMessage());
+                }
             }
+
+            //2、验证码的再次效验 redis.存key-phone,value-code
+            int code = (int) ((Math.random() * 9 + 1) * 100000);
+            String codeNum = String.valueOf(code);
+            String redisStorage = codeNum + "_" + System.currentTimeMillis();
+
+            //存入redis，防止同一个手机号在60秒内再次发送验证码
+            stringRedisTemplate.opsForValue().set(AuthServerConstant.SMS_CODE_CACHE_PREFIX+phone,
+                    redisStorage,10, TimeUnit.MINUTES);
+
+            //发送手机验证码
+//        thirdPartFeignService.sendCode(phone, codeNum);
+
+            return R.ok().put("code",codeNum);
+        } else{
+            return R.error().put("error","请输入正确的手机号");
         }
-
-        //2、验证码的再次效验 redis.存key-phone,value-code
-        int code = (int) ((Math.random() * 9 + 1) * 100000);
-        String codeNum = String.valueOf(code);
-        String redisStorage = codeNum + "_" + System.currentTimeMillis();
-
-        //存入redis，防止同一个手机号在60秒内再次发送验证码
-        stringRedisTemplate.opsForValue().set(AuthServerConstant.SMS_CODE_CACHE_PREFIX+phone,
-                redisStorage,10, TimeUnit.MINUTES);
-
-        thirdPartFeignService.sendCode(phone, codeNum);
-
-        return R.ok();
     }
 
 
